@@ -1,0 +1,15 @@
+D:\CSM\Model\bin\Debug\Model.dll.config
+D:\CSM\Model\bin\Debug\Model.dll
+D:\CSM\Model\bin\Debug\Model.pdb
+D:\CSM\Model\bin\Debug\EntityFramework.dll
+D:\CSM\Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\CSM\Model\bin\Debug\PagedList.dll
+D:\CSM\Model\bin\Debug\PagedList.Mvc.dll
+D:\CSM\Model\bin\Debug\X.PagedList.Mvc.PagedListExt.dll
+D:\CSM\Model\bin\Debug\EntityFramework.xml
+D:\CSM\Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\CSM\Model\bin\Debug\PagedList.xml
+D:\CSM\Model\bin\Debug\PagedList.Mvc.xml
+D:\CSM\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache
+D:\CSM\Model\obj\Debug\Model.dll
+D:\CSM\Model\obj\Debug\Model.pdb
