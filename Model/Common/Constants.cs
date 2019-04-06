@@ -19,7 +19,7 @@
         public static string TOTALBILL = "TOTALBILL";
         public static string EDITCOUNT = "EDITCOUNT";
         public static string BILLID = "BILLID";
-        public static int PageSize = 8;
+        public static int PageSize = 6;
         
     }
 }

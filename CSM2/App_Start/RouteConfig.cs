@@ -16,8 +16,14 @@ namespace CSM2
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Product", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Product", action = "Product", id = UrlParameter.Optional },
                 namespaces: new string[] {"CSM2.Controllers"}
+            );
+            routes.MapRoute(
+                name: "phantrangsp",
+                url: "trang",
+                defaults: new { controller = "Product", action = "Product" },
+                namespaces: new[] { "CSM2.Controllers" }
             );
         }
     }

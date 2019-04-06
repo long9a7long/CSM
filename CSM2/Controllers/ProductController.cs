@@ -20,14 +20,15 @@ namespace CSM2.Controllers
 
         
 
-        public ActionResult Product(string search_kw = "", int pageIndex = 1)
+        public ActionResult Product(string search_kw = "", int page = 1)
         {
             //var category = new CategoryDAO().ViewDetail(productId);
             //ViewBag.Category = category;
             int totalRecord = 0;///tong ban ghi cua danh muc
-            var product = new ProductDao().ListByCategoryId(ref totalRecord, pageIndex, search_kw);
+            var product = new ProductDao().ListByCategoryId(ref totalRecord, page, search_kw);
+            //ViewBag.Products = product;
             ViewBag.Total = totalRecord;
-            ViewBag.Page = pageIndex;
+            ViewBag.Page = page;
 
             int maxPage = 3;//so trang hien thi toi da treng trang
             int totalPage = 0; //tong so trang tính ra
@@ -36,8 +37,8 @@ namespace CSM2.Controllers
             ViewBag.MaxPage = maxPage;
             ViewBag.First = 1;
             ViewBag.Last = totalPage;//trang cuoi cung
-            ViewBag.Next = pageIndex + 1;
-            ViewBag.Prev = pageIndex - 1;
+            ViewBag.Next = page + 1;
+            ViewBag.Prev = page - 1;
             return View(product);
         }
         public JsonResult ListName(string q)
