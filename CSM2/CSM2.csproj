@@ -7665,7 +7665,9 @@
     <Content Include="Assets\admin\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="Assets\admin\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="Assets\admin\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="Assets\Data\Images\aokhoac.jpg" />
     <Content Include="Assets\Data\Images\aothunngantay.jpg" />
+    <Content Include="Assets\Data\Images\baggy.jpg" />
     <Content Include="Assets\Data\Images\bingsuchanhday.jpg" />
     <Content Include="Assets\Data\Images\bingsudualuoi.jpg" />
     <Content Include="Assets\Data\Images\bingsuxoai.jpg" />
@@ -7683,10 +7685,12 @@
     <Content Include="Assets\Data\Images\images\chanhday%281%29.jpg" />
     <Content Include="Assets\Data\Images\images\chanhday.jpg" />
     <Content Include="Assets\Data\Images\images\somitrang.jpg" />
+    <Content Include="Assets\Data\Images\jeandui.jpg" />
     <Content Include="Assets\Data\Images\jeans.jpg" />
     <Content Include="Assets\Data\Images\kem-tra-xanh.jpg" />
     <Content Include="Assets\Data\Images\kemkhoaimon.jpg" />
     <Content Include="Assets\Data\Images\kemtraidua.jpg" />
+    <Content Include="Assets\Data\Images\khoacjean.jpg" />
     <Content Include="Assets\Data\Images\quantayau.jpg" />
     <Content Include="Assets\Data\Images\shipper.jpg" />
     <Content Include="Assets\Data\Images\sinh-to-dau.jpg" />
@@ -7695,6 +7699,8 @@
     <Content Include="Assets\Data\Images\somi.jpg" />
     <Content Include="Assets\Data\Images\somitrang.jpg" />
     <Content Include="Assets\Data\Images\vay.jpg" />
+    <Content Include="Assets\Data\Images\vaydutiec.jpg" />
+    <Content Include="Assets\Data\Images\vaytiec.jpg" />
     <Content Include="Assets\Data\Images\_thumbs\Images\cafesuada.jpg" />
     <Content Include="Assets\Data\Images\_thumbs\Images\chanhday%281%29.jpg" />
     <Content Include="Assets\Data\Images\_thumbs\Images\chanhday.jpg" />

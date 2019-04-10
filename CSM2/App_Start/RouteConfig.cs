@@ -25,6 +25,12 @@ namespace CSM2
                 defaults: new { controller = "Product", action = "Product" },
                 namespaces: new[] { "CSM2.Controllers" }
             );
+            routes.MapRoute(
+                name: "Search",
+                url: "tim-kiem",
+                defaults: new { controller = "Product", action = "Product", id = UrlParameter.Optional },
+                namespaces: new string[] { "CSM2.Controllers" }
+            );
         }
     }
 }

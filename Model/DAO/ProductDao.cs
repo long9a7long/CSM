@@ -184,9 +184,51 @@ namespace Model.DAO
             return db.Products.Where(x => x.ProdID != productID && x.CateID == product.CateID).ToList();
         }
 
-        public List<Product> ListByCategoryId(ref int totalRecord, int pageIndex = 1,string key_search="")
+        public List<Product> ListByCategoryId(ref int totalRecord, int pageIndex = 1,string key_search="", int price=0, int category=0)
         {
-            var model = db.Products.OrderBy(x => x.ProdID).Where(x=>x.ProdName.Contains(key_search)).ToList();
+            var model = db.Products.ToList();
+            if (key_search == "" && category == 0)
+            {
+                switch (price)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost < 100000).ToList();
+                        break;
+                    case 2:
+                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 100000 && x.Cost < 200000).ToList();
+                        break;
+                    case 3:
+                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 200000 && x.Cost < 500000).ToList();
+                        break;
+                    case 4:
+                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 500000).ToList();
+                        break;
+                }
+            }
+            if(key_search=="" && price==0)
+            {
+                model = db.Products.OrderBy(x => x.ProdID).Where(x => x.CateID==category).ToList();
+            }
+            if (price == 0 && category == 0)
+            {
+                model = db.Products.OrderBy(x => x.ProdID).Where(x => x.ProdName.Contains(key_search)).ToList();
+                totalRecord = model.Count();//nghi nó bằng 0 chỗ này
+            }
+            model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
+            return model;
+        }
+
+        //thử
+        public List<Product> ListByCategoryCost(ref int totalRecord, int pageIndex = 1, string key_search = "")
+        {
+            var model = db.Products.ToList();
+            if (key_search == "1")
+            {
+                model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost < 100).ToList();
+            }
+            else if(key_search=="2")
             totalRecord = model.Count();//nghi nó bằng 0 chỗ này
             model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
             return model;
@@ -198,7 +240,7 @@ namespace Model.DAO
         public List<Product> Search(string search_kw, ref int totalRecord, int pageIndex = 1)
         {
             var model = db.Products.Where(x => x.ProdName.Contains(search_kw)).ToList();
-            totalRecord = db.Products.Where(x=>x.ProdName.Contains(search_kw)).Count();//nghi nó bằng 0 chỗ này
+            totalRecord = db.Products.Where(x=>x.ProdName.Contains(search_kw)).ToList().Count();//nghi nó bằng 0 chỗ này
             model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
             return model;
         }

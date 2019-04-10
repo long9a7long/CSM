@@ -1,10 +1,10 @@
 ﻿@{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var category = (Model.EF.Category)ViewBag.Category;
+    var list = (System.Collections.Generic.List<Model.EF.Category>)ViewBag.CategoryID;
+    var category =(Model.EF.Category)ViewBag.Category;
     var totalProd = 0;
 }
-
 <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
     <div class="container">
         <div class="breadcrumb-content text-center">
@@ -31,7 +31,7 @@
                                 <option value="">In stock</option>
                             </select>
                         </div>
-                        <p>Showing 1–12 of 20 result</p>
+                        <p>Showing 1–6 of @ViewBag.Total result</p>
                     </div>
                     <div class="shop-tab nav">
                         <a class="active" href="#shop-1" data-toggle="tab">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="shop-bottom-area mt-35">
                     <div class="tab-content jump">
-                        <div id="shop-1" class="tab-pane active"> 
+                        <div id="shop-1" class="tab-pane active">
                             <div class="row">
                                 @foreach (var item in Model)
                                 {
@@ -78,52 +78,52 @@
                                                     <i class="fa fa-star-o"></i>
                                                 </div>
                                                 <div class="product-price">
-                                                    <span>@item.Cost</span>
+                                                    <span>@item.Cost VNĐ</span>
                                                     <span class="old">$ 60.00</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 }
-                            </div>  
+                            </div>
                         </div>
                         <div id="shop-2" class="tab-pane">
                             <div class="shop-list-wrap mb-30">
                                 <div class="row">
-                                    @foreach(var item in Model)
+                                    @foreach (var item in Model)
                                     {
-                                      <div class="col-xl-4 col-lg-5 col-md-5 col-sm-6">
-                                        <div class="product-wrap">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img class="default-img" src="@item.ImageUrl" alt="">
-                                                </a>
-                                                <span class="pink">-10%</span>
-                                            </div>
-                                        </div>
-                                      </div>
-                                      <div class="col-xl-8 col-lg-7 col-md-7 col-sm-6">
-                                        <div class="shop-list-content">
-                                            <h3><a href="#">@item.ProdName</a></h3>
-                                            <div class="product-list-price">
-                                                <span>@item.Cost</span>
-                                                <span class="old">$ 90.00</span>
-                                            </div>
-                                            <div class="rating-review">
-                                                <div class="product-list-rating">
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o"></i>
+                                        <div class="col-xl-4 col-lg-5 col-md-5 col-sm-6">
+                                            <div class="product-wrap">
+                                                <div class="product-img">
+                                                    <a href="#">
+                                                        <img class="default-img" src="@item.ImageUrl" alt="">
+                                                    </a>
+                                                    <span class="pink">-10%</span>
                                                 </div>
-                                                <a href="#">3 Reviews</a>
-                                            </div>
-                                            <p>Lorem ipsum dolor sit amet, consecteto adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua Ut enim ad minim </p>
-                                            <div class="shop-list-btn btn-hover">
-                                                <a href="#">ADD TO CART</a>
                                             </div>
                                         </div>
+                                        <div class="col-xl-8 col-lg-7 col-md-7 col-sm-6">
+                                            <div class="shop-list-content">
+                                                <h3><a href="#">@item.ProdName</a></h3>
+                                                <div class="product-list-price">
+                                                    <span>@item.Cost VNĐ</span>
+                                                    <span class="old">$ 90.00</span>
+                                                </div>
+                                                <div class="rating-review">
+                                                    <div class="product-list-rating">
+                                                        <i class="fa fa-star-o yellow"></i>
+                                                        <i class="fa fa-star-o yellow"></i>
+                                                        <i class="fa fa-star-o yellow"></i>
+                                                        <i class="fa fa-star-o yellow"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <a href="#">3 Reviews</a>
+                                                </div>
+                                                <p>Lorem ipsum dolor sit amet, consecteto adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua Ut enim ad minim </p>
+                                                <div class="shop-list-btn btn-hover">
+                                                    <a href="#">ADD TO CART</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     }
                                 </div>
@@ -138,55 +138,55 @@
                             <li><a class="next" href="#"><i class="fa fa-angle-double-right"></i></a></li>
                         </ul>
                     </div>-->
-                        <div class="pro-pagination-style text-center mt-30">
-                            @if (ViewBag.TotalPage > 1)
-                            {
-                                var pageDisplay = ViewBag.MaxPage;<!-- hien thi tong toi da 3 trang -->
-                                int totalPage = ViewBag.TotalPage;<!-- tong trang 2 -->
-                                int currentPage = ViewBag.Page;<!-- trang hien tai 1-->
-
-                                var starPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
-                                var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
-
-                                //var link = "/Home/Index";
-                                var link = "/Product/Product";
-
-                                <ul class="pagination mt-20">
-                                    @if (currentPage > ViewBag.First)
-                                    {
-                                        <li>
-                                            <a class="prev" href="@link?page=@ViewBag.Prev" aria-label="Prevous">
-                                                <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
-                                            </a>
-                                        </li>
-                                    }
-                                    @for (int i = starPageIndex; i <= endPageIndex; i++)
-                                    {
-                                        if (currentPage == i)
-                                        {
-                                            <li class="active"><a href="@link?page=@i">@i</a></li>
-                                        }
-                                        else
-                                        {
-                                            <li><a href="@link?page=@i">@i</a></li>
-                                        }
-                                    }
-                                    @if (currentPage < totalPage)
-                                    {
-                                        <li>
-                                            <a class="next" href="@link?page=@ViewBag.Next" aria-label="Next">
-                                                <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
-                            }
-
-                        </div>
-                        @if (totalProd == 0)
+                    <div class="pro-pagination-style text-center mt-30">
+                        @if (ViewBag.TotalPage > 1)
                         {
-                            <p>Không có sản phẩm nào</p>
+                            var pageDisplay = ViewBag.MaxPage;<!-- hien thi tong toi da 3 trang -->
+                            int totalPage = ViewBag.TotalPage;<!-- tong trang 2 -->
+                            int currentPage = ViewBag.Page;<!-- trang hien tai 1-->
+
+                            var starPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                            var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+
+                            //var link = "/Home/Index";
+                            var link = "/Product/Product";
+
+                            <ul class="pagination mt-20">
+                                @if (currentPage > ViewBag.First)
+                                {
+                                    <li>
+                                        <a class="prev" href="@link?page=@ViewBag.Prev" aria-label="Prevous">
+                                            <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                                        </a>
+                                    </li>
+                                }
+                                @for (int i = starPageIndex; i <= endPageIndex; i++)
+                                {
+                                    if (currentPage == i)
+                                    {
+                                        <li class="active"><a href="@link?page=@i">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@link?page=@i">@i</a></li>
+                                    }
+                                }
+                                @if (currentPage < totalPage)
+                                {
+                                    <li>
+                                        <a class="next" href="@link?page=@ViewBag.Next" aria-label="Next">
+                                            <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
                         }
+
+                    </div>
+                    @if (totalProd == 0)
+                    {
+                        <p>Không có sản phẩm nào</p>
+                    }
                 </div>
             </div>
             <div class="col-lg-3">
@@ -195,104 +195,38 @@
                         <h4 class="pro-sidebar-title">Search </h4>
                         <div class="pro-sidebar-search mb-50 mt-25">
                             <form class="pro-sidebar-search-form" action="#">
-                                <input type="text" placeholder="Search here...">
-                                <button>
-                                    <i class="pe-7s-search"></i>
-                                </button>
+                                @using (Html.BeginForm("Product", "Product", FormMethod.Get, new { @class = "form-search" }))
+                                {
+                                    <input type="text" id="txt_search_kw" name="search_kw" placeholder="Search here...">
+                                    <button>
+                                        <i class="pe-7s-search"></i>
+                                    </button>
+                                }
                             </form>
                         </div>
                     </div>
-                    <div class="sidebar-widget">
-                        <h4 class="pro-sidebar-title">Refine By </h4>
-                        <div class="sidebar-widget-list mt-30">
-                            <ul>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">New <span>4</span></a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">In Stock <span>4</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mt-45">
-                        <h4 class="pro-sidebar-title">Filter By Price </h4>
-                        <div class="price-filter mt-10">
-                            <div class="price-slider-amount">
-                                <input type="text" id="amount" name="price" placeholder="Add Your Price" />
-                            </div>
-                            <div id="slider-range"></div>
-                        </div>
-                    </div>
                     <div class="sidebar-widget mt-50">
-                        <h4 class="pro-sidebar-title">Colour </h4>
+                        <h4 class="pro-sidebar-title">Filter By Price </h4>
                         <div class="sidebar-widget-list mt-20">
                             <ul>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Green <span>4</span> </a>
-                                        <span class="checkmark"></span>
+                                        <a href="?price=1">Dưới 100 nghìn</a>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Cream <span>4</span> </a>
-                                        <span class="checkmark"></span>
+                                         <a href="?price=2">Từ 100-200 nghìn </a>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Blue <span>4</span> </a>
-                                        <span class="checkmark"></span>
+                                        <a href="?price=3">Từ 200-500 nghìn </a>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">Black <span>4</span> </a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mt-40">
-                        <h4 class="pro-sidebar-title">Size </h4>
-                        <div class="sidebar-widget-list mt-20">
-                            <ul>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">XL</a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">L</a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">SM</a>
-                                        <span class="checkmark"></span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="sidebar-widget-list-left">
-                                        <input type="checkbox" value=""> <a href="#">XXL</a>
-                                        <span class="checkmark"></span>
+                                        <a href="?price=4">Trên 500 nghìn </a>
                                     </div>
                                 </li>
                             </ul>
@@ -301,12 +235,11 @@
                     <div class="sidebar-widget mt-50">
                         <h4 class="pro-sidebar-title">Tag </h4>
                         <div class="sidebar-widget-tag mt-25">
-                            <ul>
-                                <li><a href="#">Clothing</a></li>
-                                <li><a href="#">Accessories</a></li>
-                                <li><a href="#">For Men</a></li>
-                                <li><a href="#">Women</a></li>
-                                <li><a href="#">Fashion</a></li>
+                            <ul> 
+                                @foreach (var item in list)
+                                {
+                                    <li><a href="?category=@item.CateID">@item.CateName</a></li>
+                                }
                             </ul>
                         </div>
                     </div>

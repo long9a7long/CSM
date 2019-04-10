@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Model.DAO;
 using Models.Common;
+using System.Collections;
 
 namespace CSM2.Controllers
 {
@@ -18,18 +19,23 @@ namespace CSM2.Controllers
             return View();
         }
 
-        
+        public void SetCategoryViewBag(int? selectedID = null)
+        {
+            var dao = new CategoryDAO();
+            var listCategory = dao.GetListAll();
+            ViewBag.CategoryID = listCategory;
+        }
 
-        public ActionResult Product(string search_kw = "", int page = 1)
+        public ActionResult Product(string search_kw = "", int page = 1, int price=0, int category=0)
         {
             //var category = new CategoryDAO().ViewDetail(productId);
             //ViewBag.Category = category;
             int totalRecord = 0;///tong ban ghi cua danh muc
-            var product = new ProductDao().ListByCategoryId(ref totalRecord, page, search_kw);
+            var product = new ProductDao().ListByCategoryId(ref totalRecord, page, search_kw, price, category);
             //ViewBag.Products = product;
             ViewBag.Total = totalRecord;
             ViewBag.Page = page;
-
+            SetCategoryViewBag();
             int maxPage = 3;//so trang hien thi toi da treng trang
             int totalPage = 0; //tong so trang tính ra
             totalPage = (int)Math.Ceiling((double)(totalRecord / Constants.PageSize)) + 1;//chia tong ban ghi cho so luong tren trang, làm tron len
@@ -40,6 +46,7 @@ namespace CSM2.Controllers
             ViewBag.Next = page + 1;
             ViewBag.Prev = page - 1;
             return View(product);
+            
         }
         public JsonResult ListName(string q)
         {
