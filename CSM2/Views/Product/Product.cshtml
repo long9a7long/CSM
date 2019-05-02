@@ -31,7 +31,7 @@
                                 <option value="">In stock</option>
                             </select>
                         </div>
-                        <p>Showing 1–6 of @ViewBag.Total result</p>
+                        <p>Showing @ViewBag.RecordinPage of @ViewBag.Total result</p>
                     </div>
                     <div class="shop-tab nav">
                         <a class="active" href="#shop-1" data-toggle="tab">
@@ -155,29 +155,70 @@
                                 @if (currentPage > ViewBag.First)
                                 {
                                     <li>
+                                        @if (ViewBag.price == 0)
+                                        {
                                         <a class="prev" href="@link?page=@ViewBag.Prev" aria-label="Prevous">
                                             <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
                                         </a>
+                                        }
+
+                                        else
+                                        {
+                                        <a class="prev" href="@link?page=@ViewBag.Prev&price=@ViewBag.price" aria-label="Prevous">
+                                            <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                                        </a>
+                                        }
+                                        
                                     </li>
                                 }
                                 @for (int i = starPageIndex; i <= endPageIndex; i++)
                                 {
                                     if (currentPage == i)
                                     {
-                                        <li class="active"><a href="@link?page=@i">@i</a></li>
+                                        if (ViewBag.price == 0)
+                                        {
+                                            <li class="active"><a href="@link?page=@i">@i</a></li>
+                                        }
+
+                                        else
+                                        {
+                                            <li class="active"><a href="@link?page=@i&price=@ViewBag.price">@i</a></li>
+                                        }
                                     }
                                     else
                                     {
-                                        <li><a href="@link?page=@i">@i</a></li>
+                                        if (ViewBag.price == 0)
+                                        {
+                                            <li><a href="@link?page=@i">@i</a></li>
+                                        }
+
+                                        else
+                                        {
+                                            <li><a href="@link?page=@i&price=@ViewBag.price">@i</a></li>
+                                        }
+
                                     }
                                 }
                                 @if (currentPage < totalPage)
                                 {
-                                    <li>
-                                        <a class="next" href="@link?page=@ViewBag.Next" aria-label="Next">
-                                            <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
-                                        </a>
-                                    </li>
+                                    if (ViewBag.price == 0)
+                                    {
+                                        <li>
+                                            <a class="next" href="@link?page=@ViewBag.Next" aria-label="Next">
+                                                <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    else
+                                    {
+                                        <li>
+                                            <a class="next" href="@link?page=@ViewBag.Next&price=@ViewBag.price" aria-label="Next">
+                                                <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                                            </a>
+                                        </li>
+                                    }
+
                                 }
                             </ul>
                         }

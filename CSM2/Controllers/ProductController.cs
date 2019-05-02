@@ -38,13 +38,20 @@ namespace CSM2.Controllers
             SetCategoryViewBag();
             int maxPage = 3;//so trang hien thi toi da treng trang
             int totalPage = 0; //tong so trang tính ra
-            totalPage = (int)Math.Ceiling((double)(totalRecord / Constants.PageSize)) + 1;//chia tong ban ghi cho so luong tren trang, làm tron len
+            
+            totalPage = totalRecord==Constants.PageSize?1:(int)Math.Ceiling((double)(totalRecord / Constants.PageSize)) + 1;//chia tong ban ghi cho so luong tren trang, làm tron len
             ViewBag.TotalPage = totalPage;
             ViewBag.MaxPage = maxPage;
             ViewBag.First = 1;
             ViewBag.Last = totalPage;//trang cuoi cung
             ViewBag.Next = page + 1;
             ViewBag.Prev = page - 1;
+            ViewBag.Price = price;
+            if (totalRecord <= Constants.PageSize)
+            {
+                ViewBag.RecordinPage = totalRecord;
+            }else
+                ViewBag.RecordinPage = totalRecord < page*Constants.PageSize?totalRecord % page:Constants.PageSize;
             return View(product);
             
         }
@@ -63,6 +70,7 @@ namespace CSM2.Controllers
             //ViewBag.Category = category;
             int totalRecord = 0;///tong ban ghi cua danh muc
             var search = new ProductDao().Search(search_kw, ref totalRecord, pageIndex);
+            
             ViewBag.Total = totalRecord;
             ViewBag.Page = pageIndex;
             ViewBag.Keyword = search_kw;

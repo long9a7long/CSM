@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PagedList;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Model.DAO
 {
@@ -17,6 +19,22 @@ namespace Model.DAO
         /**
          * @description -- init
          */
+        private string ConvertToUnSign(string input)
+        {
+            input = input.Trim();
+            for (int i = 0x20; i < 0x30; i++)
+            {
+                input = input.Replace(((char)i).ToString(), " ");
+            }
+            Regex regex = new Regex(@"\p{IsCombiningDiacriticalMarks}+");
+            string str = input.Normalize(NormalizationForm.FormD);
+            string str2 = regex.Replace(str, string.Empty).Replace('đ', 'd').Replace('Đ', 'D');
+            while (str2.IndexOf("?") >= 0)
+            {
+                str2 = str2.Remove(str2.IndexOf("?"), 1);
+            }
+            return str2;
+        }
 
         public ProductDao()
         {
@@ -187,6 +205,7 @@ namespace Model.DAO
         public List<Product> ListByCategoryId(ref int totalRecord, int pageIndex = 1,string key_search="", int price=0, int category=0)
         {
             var model = db.Products.ToList();
+            
             if (key_search == "" && category == 0)
             {
                 switch (price)
@@ -213,10 +232,19 @@ namespace Model.DAO
             }
             if (price == 0 && category == 0)
             {
-                model = db.Products.OrderBy(x => x.ProdID).Where(x => x.ProdName.Contains(key_search)).ToList();
-                totalRecord = model.Count();//nghi nó bằng 0 chỗ này
+                
+                model = db.Products.OrderBy(x => x.ProdID).Where(delegate(Product c)
+                {
+                    if (ConvertToUnSign(c.ProdName).IndexOf(key_search, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        return true;
+                    else
+                        return false;
+                }).AsQueryable().ToList();
+                
             }
+            totalRecord = model.Count();
             model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
+            
             return model;
         }
 
@@ -239,10 +267,32 @@ namespace Model.DAO
         }
         public List<Product> Search(string search_kw, ref int totalRecord, int pageIndex = 1)
         {
-            var model = db.Products.Where(x => x.ProdName.Contains(search_kw)).ToList();
-            totalRecord = db.Products.Where(x=>x.ProdName.Contains(search_kw)).ToList().Count();//nghi nó bằng 0 chỗ này
+            //var model = db.Products.Where(x => x.ProdName.Contains(search_kw)).ToList();
+            //totalRecord = db.Products.Where(x=>x.ProdName.Contains(search_kw)).ToList().Count();//nghi nó bằng 0 chỗ này
+            //model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
+            //return model;
+
+            var model = db.Products.Where(delegate(Product c)
+            {
+                if (ConvertToUnSign(c.ProdName).IndexOf(search_kw, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    return true;
+                else
+                    return false;
+            }).AsQueryable().ToList();
+
+            totalRecord = db.Products.Where(delegate(Product c)
+            {
+                if (ConvertToUnSign(c.ProdName).IndexOf(search_kw, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    return true;
+                else
+                    return false;
+            }).AsQueryable().Count();
+
             model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
             return model;
         }
+
+
+
     }
 }
