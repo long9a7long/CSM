@@ -11,7 +11,6 @@ namespace CSM2.Controllers
 {
     public class ProductController : Controller
     {
-        private const string CartSession = "CartSession";
 
         // GET: Product
         public ActionResult Index()
@@ -26,12 +25,16 @@ namespace CSM2.Controllers
             ViewBag.CategoryID = listCategory;
         }
 
-        public ActionResult Product(string search_kw = "", int page = 1, int price=0, int category=0)
+        public ActionResult Product(string search_kw = "", int page = 1, int price=0, int category=0,int order=1)
         {
-            //var category = new CategoryDAO().ViewDetail(productId);
-            //ViewBag.Category = category;
+            int n, order_by = 1;
+            bool isNumeric = int.TryParse(order.ToString(), out n);
+            if (isNumeric)
+            {
+                order_by = order;
+            }
             int totalRecord = 0;///tong ban ghi cua danh muc
-            var product = new ProductDao().ListByCategoryId(ref totalRecord, page, search_kw, price, category);
+            var product = new ProductDao().ListByCategoryId(ref totalRecord, page, search_kw, price, category, order_by);
             //ViewBag.Products = product;
             ViewBag.Total = totalRecord;
             ViewBag.Page = page;

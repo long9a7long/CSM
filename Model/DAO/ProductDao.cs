@@ -202,7 +202,7 @@ namespace Model.DAO
             return db.Products.Where(x => x.ProdID != productID && x.CateID == product.CateID).ToList();
         }
 
-        public List<Product> ListByCategoryId(ref int totalRecord, int pageIndex = 1,string key_search="", int price=0, int category=0)
+        public List<Product> ListByCategoryId(ref int totalRecord, int pageIndex = 1,string key_search="", int price=0, int category=0,int order_by=1)
         {
             var model = db.Products.ToList();
             
@@ -213,29 +213,29 @@ namespace Model.DAO
                     case 0:
                         break;
                     case 1:
-                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost < 100000).ToList();
+                        model = db.Products.Where(x => x.Cost < 100000).ToList();
                         break;
                     case 2:
-                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 100000 && x.Cost < 200000).ToList();
+                        model = db.Products.Where(x => x.Cost >= 100000 && x.Cost < 200000).ToList();
                         break;
                     case 3:
-                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 200000 && x.Cost < 500000).ToList();
+                        model = db.Products.Where(x => x.Cost >= 200000 && x.Cost < 500000).ToList();
                         break;
                     case 4:
-                        model = db.Products.OrderBy(x => x.ProdID).Where(x => x.Cost >= 500000).ToList();
+                        model = db.Products.Where(x => x.Cost >= 500000).ToList();
                         break;
                 }
             }
             if(key_search=="" && price==0)
             {
-                model = db.Products.OrderBy(x => x.ProdID).Where(x => x.CateID==category).ToList();
+                model = db.Products.Where(x => x.CateID==category).ToList();
             }
             if (price == 0 && category == 0)
             {
                 
-                model = db.Products.OrderBy(x => x.ProdID).Where(delegate(Product c)
+                model = db.Products.Where(delegate(Product c)
                 {
-                    if (ConvertToUnSign(c.ProdName).IndexOf(key_search, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    if (ConvertToUnSign(c.ProdName).IndexOf(ConvertToUnSign(key_search), StringComparison.CurrentCultureIgnoreCase) >= 0)
                         return true;
                     else
                         return false;
@@ -243,8 +243,25 @@ namespace Model.DAO
                 
             }
             totalRecord = model.Count();
-            model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
             
+            switch (order_by)
+            {
+                case 0:
+                    break;
+                case 1:
+                    model= model.OrderByDescending(x => x.ProdID).ToList();
+                    break;
+                case 2:
+                    model = model.OrderBy(x => ConvertToUnSign(x.ProdName)).ToList();
+                    break;
+                case 3:
+                    model = model.OrderByDescending(x => ConvertToUnSign(x.ProdName)).ToList();
+                    break;
+                case 4:
+                    model = model.OrderByDescending(x => x.Wantity).ToList();
+                    break;
+            }
+            model = model.Skip((pageIndex - 1) * Constants.PageSize).Take(Constants.PageSize).ToList();
             return model;
         }
 

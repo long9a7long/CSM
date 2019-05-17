@@ -24,6 +24,8 @@ namespace Model.EF
 
         public int Cost { get; set; }
 
+        public int Saving_Cost { get; set; }
+
         public bool isActive { get; set; }
 
         public int CateID { get; set; }
@@ -33,6 +35,8 @@ namespace Model.EF
         public DateTime? UpdatedAt { get; set; }
 
         public int? Wantity { get; set; }
+
+        public String Album { get; set; }
 
         public virtual Category Category { get; set; }
     }

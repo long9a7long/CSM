@@ -1,8 +1,10 @@
-﻿@{
+﻿@using System.Globalization;
+@using System.Linq;
+@{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var list = (System.Collections.Generic.List<Model.EF.Category>)ViewBag.CategoryID;
-    var category =(Model.EF.Category)ViewBag.Category;
+    var category = (Model.EF.Category)ViewBag.Category;
     var totalProd = 0;
 }
 <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
@@ -24,11 +26,11 @@
                 <div class="shop-top-bar">
                     <div class="select-shoing-wrap">
                         <div class="shop-select">
-                            <select>
-                                <option value="">Sort by newness</option>
-                                <option value="">A to Z</option>
-                                <option value=""> Z to A</option>
-                                <option value="">In stock</option>
+                            <select id="select_order">
+                                <option value="1">Sort by newness</option>
+                                <option value="2">A to Z</option>
+                                <option value="3"> Z to A</option>
+                                <option value="4">In stock</option>
                             </select>
                         </div>
                         <p>Showing @ViewBag.RecordinPage of @ViewBag.Total result</p>
@@ -48,6 +50,10 @@
                             <div class="row">
                                 @foreach (var item in Model)
                                 {
+                                    int cost = item.Cost;
+                                    int saving = item.Saving_Cost;
+
+                                    double saving_percent = Math.Round((double)(cost - saving) / cost * 100);
                                     totalProd++;
                                     <div class="col-xl-4 col-md-6 col-lg-6 col-sm-6">
                                         <div class="product-wrap mb-25 scroll-zoom">
@@ -55,7 +61,7 @@
                                                 <a href="#">
                                                     <img class="default-img" src="@item.ImageUrl" alt="">
                                                 </a>
-                                                <span class="pink">-10%</span>
+                                                <span class="pink">-@saving_percent%</span>
                                                 <div class="product-action">
                                                     <div class="pro-same-action pro-wishlist">
                                                         <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
@@ -64,22 +70,14 @@
                                                         <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
                                                     </div>
                                                     <div class="pro-same-action pro-quickview">
-                                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#modalProd_@item.ProdID"><i class="pe-7s-look"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="product-content text-center">
                                                 <h3><a href="product-details.html">@item.ProdName</a></h3>
-                                                <div class="product-rating">
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o yellow"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </div>
                                                 <div class="product-price">
-                                                    <span>@item.Cost VNĐ</span>
-                                                    <span class="old">$ 60.00</span>
+                                                    <span>@item.Saving_Cost.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,13 +90,16 @@
                                 <div class="row">
                                     @foreach (var item in Model)
                                     {
+                                        int cost = item.Cost;
+                                        int saving = item.Saving_Cost;
+                                        double saving_percent = Math.Round((double)(cost - saving) / cost * 100);
                                         <div class="col-xl-4 col-lg-5 col-md-5 col-sm-6">
                                             <div class="product-wrap">
                                                 <div class="product-img">
                                                     <a href="#">
                                                         <img class="default-img" src="@item.ImageUrl" alt="">
                                                     </a>
-                                                    <span class="pink">-10%</span>
+                                                    <span class="pink">-@saving_percent%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,20 +107,9 @@
                                             <div class="shop-list-content">
                                                 <h3><a href="#">@item.ProdName</a></h3>
                                                 <div class="product-list-price">
-                                                    <span>@item.Cost VNĐ</span>
-                                                    <span class="old">$ 90.00</span>
+                                                    <span>@item.Saving_Cost.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</span>
                                                 </div>
-                                                <div class="rating-review">
-                                                    <div class="product-list-rating">
-                                                        <i class="fa fa-star-o yellow"></i>
-                                                        <i class="fa fa-star-o yellow"></i>
-                                                        <i class="fa fa-star-o yellow"></i>
-                                                        <i class="fa fa-star-o yellow"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    </div>
-                                                    <a href="#">3 Reviews</a>
-                                                </div>
-                                                <p>Lorem ipsum dolor sit amet, consecteto adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua Ut enim ad minim </p>
+                                                <p>@item.Decription</p>
                                                 <div class="shop-list-btn btn-hover">
                                                     <a href="#">ADD TO CART</a>
                                                 </div>
@@ -157,18 +147,18 @@
                                     <li>
                                         @if (ViewBag.price == 0)
                                         {
-                                        <a class="prev" href="@link?page=@ViewBag.Prev" aria-label="Prevous">
-                                            <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
-                                        </a>
+                                            <a class="prev" href="@link?page=@ViewBag.Prev" aria-label="Prevous">
+                                                <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                                            </a>
                                         }
 
                                         else
                                         {
-                                        <a class="prev" href="@link?page=@ViewBag.Prev&price=@ViewBag.price" aria-label="Prevous">
-                                            <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
-                                        </a>
+                                            <a class="prev" href="@link?page=@ViewBag.Prev&price=@ViewBag.price" aria-label="Prevous">
+                                                <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                                            </a>
                                         }
-                                        
+
                                     </li>
                                 }
                                 @for (int i = starPageIndex; i <= endPageIndex; i++)
@@ -235,7 +225,7 @@
                     <div class="sidebar-widget">
                         <h4 class="pro-sidebar-title">Search </h4>
                         <div class="pro-sidebar-search mb-50 mt-25">
-                            <form class="pro-sidebar-search-form" action="#">
+                            <form class="pro-sidebar-search-form" action="">
                                 @using (Html.BeginForm("Product", "Product", FormMethod.Get, new { @class = "form-search" }))
                                 {
                                     <input type="text" id="txt_search_kw" name="search_kw" placeholder="Search here...">
@@ -257,7 +247,7 @@
                                 </li>
                                 <li>
                                     <div class="sidebar-widget-list-left">
-                                         <a href="?price=2">Từ 100-200 nghìn </a>
+                                        <a href="?price=2">Từ 100-200 nghìn </a>
                                     </div>
                                 </li>
                                 <li>
@@ -276,7 +266,7 @@
                     <div class="sidebar-widget mt-50">
                         <h4 class="pro-sidebar-title">Tag </h4>
                         <div class="sidebar-widget-tag mt-25">
-                            <ul> 
+                            <ul>
                                 @foreach (var item in list)
                                 {
                                     <li><a href="?category=@item.CateID">@item.CateName</a></li>
@@ -289,3 +279,123 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        let select_tag = document.getElementById('select_order');
+        select_tag.addEventListener('change', function () {
+            let old_url = window.location.href;
+            let value = select_tag.value;
+            let link = "";
+            if (old_url.indexOf("?") != -1) {
+                if (old_url.indexOf("order") != -1) {
+                    link = old_url.substring(0, old_url.length - 1) + value;
+                }else
+                    link = old_url + "&order=" + value;
+            }
+            else {
+                link = "?order=" + value;
+            }
+            
+            window.location.href = link;
+        });
+        
+    });
+
+</script>
+<!-- Modal -->
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="modalProd_@item.ProdID" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="tab-content quickview-big-img">
+                                @{
+                                    String albumStr = (String)item.Album;
+                                    String[] album = albumStr.Split('|');
+                                    int order = 1;
+                                    int _order = 1;
+                                }
+                                @foreach (var pic in album)
+                                {
+                                    if (order == 1)
+                                    {
+                                        <div id="pro-@order" class="tab-pane fade show active">
+                                            <img src="@pic" alt="@item.ProdName">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div id="pro-@order" class="tab-pane fade">
+                                            <img src="@pic" alt="@item.ProdName">
+                                        </div>
+                                    }
+                                    order++;
+                                }
+
+                            </div>
+                            <!-- Thumbnail Large Image End -->
+                            <!-- Thumbnail Image End -->
+                            <div class="quickview-wrap mt-15">
+                                <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist">
+
+                                    @foreach (var pic in album)
+                                    {
+
+                                        if (_order == 1)
+                                        {
+                                            <a class="active" data-toggle="tab" href="#pro-@_order"><img src="@pic" alt="@item.ProdName"></a>
+                                        }
+                                        else
+                                        {
+                                            <a data-toggle="tab" href="#pro-@_order"><img src="@pic" alt="@item.ProdName"></a>
+                                        }
+                                        _order++;
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="product-details-content quickview-content">
+                                <h2>@item.ProdName</h2>
+                                <p>Chỉ còn @item.Wantity cái trong kho</p>
+                                <div class="product-details-price">
+                                    <span>@item.Saving_Cost.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</span>
+                                    <span class="old">@item.Cost.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</span>
+                                </div>
+
+                                <p>@item.Decription</p>
+                                <div class="pro-details-quality">
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                                    </div>
+                                    <div class="pro-details-cart btn-hover">
+                                        <a href="#">Add To Cart</a>
+                                    </div>
+                                    <div class="pro-details-wishlist">
+                                        <a href="#"><i class="fa fa-heart-o"></i></a>
+                                    </div>
+                                    <div class="pro-details-compare">
+                                        <a href="#"><i class="pe-7s-shuffle"></i></a>
+                                    </div>
+                                </div>
+                                <div class="pro-details-meta">
+                                    <span>Danh mục :</span>
+                                    <ul>
+                                        <li><a href="#">@item.Category.CateName</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!-- Modal end -->
