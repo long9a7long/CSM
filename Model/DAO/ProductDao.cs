@@ -155,7 +155,7 @@ namespace Model.DAO
             IQueryable<Product> model = db.Products;
             if (!string.IsNullOrEmpty(searchString))
             {
-                model = model.Where(x => x.ProdName.Contains(searchString) || x.ProdName.Contains(searchString));
+                model = model.Where(x => x.ProdName.Contains(searchString));
             }
             return model.OrderByDescending(x => x.CreatedAt).ToPagedList(page, Constants.PageSize);
 

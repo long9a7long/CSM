@@ -24,6 +24,7 @@ namespace CSM2.Areas.Admin.Controllers
             SetCategoryViewBag();
             return View();
         }
+       
 
         [HttpPost, ValidateInput(false)]
         public ActionResult Create(Product model)
